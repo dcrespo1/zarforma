@@ -1,0 +1,12 @@
+kind: UDSBundle
+metadata:
+  name: zarforma
+  version: 0.0.1
+
+packages:
+  - name: init
+    repository: ghcr.io/zarf-dev/packages/init
+    ref: v0.74.1
+  - name: kube-prometheus-stack
+    path: ../packages/kube-prom-stack
+    ref: 0.0.1
