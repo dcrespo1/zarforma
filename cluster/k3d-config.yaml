@@ -1,0 +1,16 @@
+# k3d-config.yaml
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: zarforma
+servers: 1
+agents: 2
+options:
+  k3s:
+    extraArgs:
+      - arg: --disable=traefik # Zarf/UDS typically bring their own ingress
+        nodeFilters:
+          - server:0
+  k3d:
+    wait: true
+    timeout: "120s"

@@ -1,0 +1,27 @@
+kind: ZarfPackageConfig
+metadata:
+  name: cert-manager
+  version: 0.0.1
+components:
+  - name: cert-manager
+    required: true
+    charts:
+      - name: cert-manager
+        url: https://charts.jetstack.io
+        version: v1.20.1
+        namespace: cert-manager
+        valuesFiles:
+          - custom-values.yaml
+    images:
+      - quay.io/jetstack/cert-manager-cainjector:v1.20.1
+      - quay.io/jetstack/cert-manager-controller:v1.20.1
+      - quay.io/jetstack/cert-manager-startupapicheck:v1.20.1
+      - quay.io/jetstack/cert-manager-webhook:v1.20.1
+      # Possible images - cert-manager
+      - quay.io/jetstack/cert-manager-acmesolver:v1.20.1
+      # Cosign artifacts for images - cert-manager
+      - quay.io/jetstack/cert-manager-cainjector:sha256-a3ff773a577d8ff6ad1fe9ab4ea0b74873e0341e0aac5d9411f3fc235f51bdf8.sig
+      - quay.io/jetstack/cert-manager-controller:sha256-9f9556b4b131554694c67c8229d231b1f7d69b882b5f061a56bafa465f3b22fc.sig
+      - quay.io/jetstack/cert-manager-startupapicheck:sha256-70859153f82a241c3a40ac581fb5a25f73db16851adc801f0c8a9c9b220ae4ee.sig
+      - quay.io/jetstack/cert-manager-webhook:sha256-b876bcaf46ace2a5e860e8371539a6e1c8ccca54b1988a97c8a7483b3815d985.sig
+      - quay.io/jetstack/cert-manager-acmesolver:sha256-8ac8b9eaf0b41018f9f5a17a91da0c577f7e9f6f6921bfd189ed0e48628941bd.sig

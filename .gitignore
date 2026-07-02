@@ -1,1 +1,13 @@
-*.tar.zst
+# ── Zarf build artifacts ──────────────────────────────────────────────────
+packages/*/zarf-package-*.tar.zst
+zarf-package-*.tar.zst
+
+# ── UDS bundle artifacts ──────────────────────────────────────────────────
+bundle/uds-bundle-*.tar.zst
+
+# ── SBOMs (regenerable via `just sbom-all`) ────────────────────────────────
+sboms/
+
+# ── Zarf cache/tmp ──────────────────────────────────────────────────────────
+.zarf-cache/
+zarf-sbom*/

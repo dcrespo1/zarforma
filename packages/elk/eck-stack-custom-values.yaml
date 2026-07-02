@@ -1,0 +1,82 @@
+eck-elasticsearch:
+  enabled: true
+  fullnameOverride: elasticsearch
+  nodeSets:
+    - name: default
+      count: 3
+      config:
+        node.store.allow_mmap: false
+
+eck-kibana:
+  enabled: true
+  fullnameOverride: kibana
+  elasticsearchRef:
+    name: elasticsearch
+  config:
+    xpack.fleet.agents.elasticsearch.hosts: ["https://elasticsearch-es-http.elastic-stack.svc:9200"]
+    xpack.fleet.agents.fleet_server.hosts: ["https://fleet-server-agent-http.elastic-stack.svc:8220"]
+    xpack.fleet.packages:
+      - name: system
+        version: latest
+      - name: elastic_agent
+        version: latest
+      - name: fleet_server
+        version: latest
+      - name: kubernetes
+        version: latest
+    xpack.fleet.agentPolicies:
+      - name: Fleet Server on ECK policy
+        id: eck-fleet-server
+        namespace: default
+        is_managed: true
+        monitoring_enabled: [logs, metrics]
+        package_policies:
+          - name: fleet_server-1
+            id: fleet_server-1
+            package:
+              name: fleet_server
+      - name: Elastic Agent on ECK policy
+        id: eck-agent
+        namespace: default
+        is_managed: true
+        monitoring_enabled: [logs, metrics]
+        unenroll_timeout: 900
+        package_policies:
+          - package:
+              name: system
+            name: system-1
+          - package:
+              name: kubernetes
+            name: kubernetes-1
+
+eck-fleet-server:
+  enabled: true
+  fullnameOverride: "fleet-server"
+  policyID: eck-fleet-server
+  kibanaRef:
+    name: kibana
+  elasticsearchRefs:
+    - name: elasticsearch
+  deployment:
+    replicas: 1
+    podTemplate:
+      spec:
+        automountServiceAccountToken: true
+
+eck-agent:
+  enabled: true
+  policyID: eck-agent
+  kibanaRef:
+    name: kibana
+  elasticsearchRefs: []
+  fleetServerRef:
+    name: fleet-server
+  mode: fleet
+  daemonSet:
+    podTemplate:
+      spec:
+        hostNetwork: true
+        dnsPolicy: ClusterFirstWithHostNet
+        automountServiceAccountToken: true
+        securityContext:
+          runAsUser: 0

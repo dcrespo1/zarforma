@@ -1,0 +1,34 @@
+kind: ZarfPackageConfig
+metadata:
+  name: eck-stack
+  version: 0.0.1
+components:
+  - name: eck-operator
+    required: true
+    charts:
+      - name: eck-operator
+        url: https://helm.elastic.co
+        version: 3.4.1
+        namespace: elastic-system
+    images:
+      - docker.elastic.co/eck/eck-operator:3.4.1
+      # Cosign artifacts for images - eck-operator
+      - docker.elastic.co/eck/eck-operator:sha256-8190b4c57156a3f7a8da86db9d474c238a517738368fe18c4762100d73af5d01.sig
+
+  - name: eck-stack
+    required: true
+    charts:
+      - name: eck-stack
+        url: https://helm.elastic.co
+        version: 0.19.1
+        namespace: elastic-stack
+        valuesFiles:
+          - eck-stack-custom-values.yaml
+    images: # had to manually pull these images and their cosign signatures -- zarf dev find-images could not resolve due to elastic chart structure
+      - docker.elastic.co/elasticsearch/elasticsearch:9.4.2
+      - docker.elastic.co/kibana/kibana:9.4.2
+      - docker.elastic.co/elastic-agent/elastic-agent:9.4.2
+      # Cosign artifacts for images - eck-stack
+      - docker.elastic.co/elasticsearch/elasticsearch:sha256-be5f49784ff5ec8a5b5d7ba17f944d9d6b10c067f596ee93e6b6cb82d2dd874c.sig
+      - docker.elastic.co/kibana/kibana:sha256-b9749a7672939d1a96dd9c99b86fd84634aab8d03b0889f02177d881aea3eb01.sig
+      - docker.elastic.co/elastic-agent/elastic-agent:sha256-c58f0c4e5070869750af3f7d6d4b4c945661756f06660d33783601d70fa31b31.sig
