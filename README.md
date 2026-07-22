@@ -244,7 +244,7 @@ just grafana-login          # print Grafana admin password + port-forward in one
 ### Elastic (ECK)
 
 ```bash
-just elastic-status          # quick view of all ECK-managed CRs (Elasticsearch, Kibana, Fleet, Agent, Logstash, Beats)
+just elastic-status          # quick view of all ECK-managed CRs (Elasticsearch, Kibana, Fleet, Agent, Logstash, Beats) **beep-boop**
 just elastic-describe         # same, with -o wide
 just elastic-watch             # watch ECK resources reconcile live, useful right after deploy
 just elastic-pods               # pods in elastic-stack + elastic-system
